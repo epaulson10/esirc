@@ -22,7 +22,7 @@ class Connect
         msg_queue _queue;
         boost::asio::streambuf _msgBuffer;
         void handle_connect(const boost::system::error_code& error, boost::asio::ip::tcp::resolver::iterator iter);
-        void handle_read(const boost::system::error_code& error);
+        void handle_read(const boost::system::error_code& error, std::size_t bytes_transferred);
         void handle_write(const boost::system::error_code& error);
         void do_write(std::string msg);
 };
