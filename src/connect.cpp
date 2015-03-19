@@ -22,7 +22,7 @@ void Connect::handle_connect(const boost::system::error_code& error, tcp::resolv
     if (!error)
     {
         boost::asio::async_read_until(_socket, _msgBuffer, "\r\n",
-                boost::bind(&Connect::handle_read, this, boost::asio::placeholders::error));
+                boost::bind(&Connect::handle_read, this, boost::asio::placeholders::error,boost::asio::placeholders::bytes_transferred));
     }
     else if (endpoint_iter != tcp::resolver::iterator())
     {
@@ -33,15 +33,16 @@ void Connect::handle_connect(const boost::system::error_code& error, tcp::resolv
     }
 }
 
-void Connect::handle_read(const boost::system::error_code& error)
+void Connect::handle_read(const boost::system::error_code& error, std::size_t bytes_transferred)
 {
     if (!error)
     {
-        std::string text = boost::asio::buffer_cast<const char*>(_msgBuffer.data());
-        _msgBuffer.consume(text.size());
-        cout << text << "\n";
+        std::istream is(&_msgBuffer);
+        std::string line;
+        std::getline(is, line);
+        std::cout << line << "\n";
         boost::asio::async_read_until(_socket, _msgBuffer,"\r\n",
-                boost::bind(&Connect::handle_read, this, boost::asio::placeholders::error));
+                boost::bind(&Connect::handle_read, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
     }
     else
     {

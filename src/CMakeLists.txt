@@ -1,6 +1,8 @@
 set(INCLUDES ${esirc_SOURCE_DIR}/include)
 set (SOURCES main.cpp protocol.cpp connect.cpp)
+include_directories(${esirc_SOURCE_DIR}/include)
 
+set(BOOST_ROOT /usr/local/boost_1_57_0)
 set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
